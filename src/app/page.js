@@ -1,12 +1,15 @@
-import FeaturesSection from "@/Components/Apps/Home/FeaturesSection";
-import StartsSections from "@/Components/Apps/Home/StartsSections";
+import HeroSection from "@/Components/Apps/Home/HeroSection";
+import NextRoleCTA from "@/Components/Apps/Home/NextRoleCTA";
+import PricingSection from "@/Components/Apps/Home/PricingSection";
+
 import Image from "next/image";
 
 export default function Home() {
   return (
     <section>
-      <StartsSections />
-      <FeaturesSection />
+      <HeroSection />
+      <PricingSection />
+      <NextRoleCTA />
     </section>
   );
 }

@@ -38,7 +38,7 @@ const Navbar = () => {
     <nav
       className="
         sticky top-0 z-50 w-full
-        bg-[#0a0a0a]/80
+        bg-[#0a0a0a]
         backdrop-blur-xl
       "
     >
