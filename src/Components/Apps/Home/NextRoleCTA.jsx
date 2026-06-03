@@ -8,18 +8,15 @@ export default function NextRoleCTA() {
         className="absolute inset-0 w-full h-full bg-center bg-cover bg-no-repeat pointer-events-none z-0 opacity-80 animate-bg-move"
         style={{
           backgroundImage: "url('/images/cta-bg.png')",
-          backgroundPosition: "top", // একদম নিচ থেকে শুরুaa
+          backgroundPosition: "top",
           backgroundSize: "cover",
         }}
       />
 
-      {/* Extra Blue Glow Layer (স্ক্রিনশটের মতো নীল আলো) */}
       <div className="absolute inset-0 bg-linear-to-t from-transparent via-blue-600/10 to-transparent z-0" />
 
-      {/* Stronger Neon Glow in Center */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[85%] aspect-square bg-blue-600/20 rounded-full blur-[140px] pointer-events-none z-0" />
 
-      {/* Mask - Bottom to Top Smooth Fade */}
       <div
         className="absolute inset-0 w-full h-full pointer-events-none z-0"
         style={{

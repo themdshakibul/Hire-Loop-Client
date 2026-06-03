@@ -1,5 +1,6 @@
 "use client";
 
+import { Description, Label, Radio, RadioGroup } from "@heroui/react";
 import React, { useState } from "react";
 import { Button, Checkbox, Link, Card } from "@heroui/react";
 import { Envelope, Eye, EyeSlash, Person } from "@gravity-ui/icons";
@@ -28,6 +29,7 @@ export default function SignupPage() {
       name: userData.fullName,
       email: userData.email,
       password: userData.password,
+      role: userData.role,
     });
 
     if (data) {
@@ -56,12 +58,10 @@ export default function SignupPage() {
         <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff05_1px,transparent_1px),linear-gradient(to_bottom,#ffffff05_1px,transparent_1px)] bg-size-[42px_42px]" />
       </div>
 
-      {/* Main Card - Outer wrapper with HeroUI theme bypass */}
       <Card
         radius="3xl"
         className="relative z-10 w-full max-w-115 border border-zinc-800 bg-zinc-950/90 backdrop-blur-xl shadow-2xl p-8"
       >
-        {/* Header */}
         <div className="mb-8 text-center">
           <div className="mx-auto mb-6 flex h-16 w-16 items-center justify-center rounded-2xl bg-linear-to-br from-indigo-500 to-violet-600 shadow-lg shadow-indigo-500/20">
             <Person className="h-8 w-8 text-white" />
@@ -74,7 +74,6 @@ export default function SignupPage() {
           </p>
         </div>
 
-        {/* Social Buttons */}
         <div className="mb-8 grid grid-cols-2 gap-3">
           <Button
             onClick={signinWithGoogle}
@@ -94,7 +93,6 @@ export default function SignupPage() {
           </Button>
         </div>
 
-        {/* Divider */}
         <div className="mb-8 flex items-center gap-4">
           <div className="h-px flex-1 bg-zinc-800" />
           <span className="text-xs font-medium uppercase tracking-widest text-zinc-600">
@@ -103,9 +101,7 @@ export default function SignupPage() {
           <div className="h-px flex-1 bg-zinc-800" />
         </div>
 
-        {/* Form */}
         <form className="space-y-6" onSubmit={onSubmit}>
-          {/* Full Name Input */}
           <div className="space-y-2">
             <p className="text-sm font-medium text-zinc-300">Full Name</p>
             <div className="relative h-14 w-full rounded-xl border-2 border-zinc-700 bg-[#0A0A0A] transition-all hover:border-zinc-600 focus-within:border-indigo-500 focus-within:shadow-[0_0_0_4px_rgba(99,102,241,0.15)]">
@@ -120,7 +116,6 @@ export default function SignupPage() {
             </div>
           </div>
 
-          {/* Email Input */}
           <div className="space-y-2">
             <p className="text-sm font-medium text-zinc-300">Email Address</p>
             <div className="relative h-14 w-full rounded-xl border-2 border-zinc-700 bg-[#0A0A0A] transition-all hover:border-zinc-600 focus-within:border-indigo-500 focus-within:shadow-[0_0_0_4px_rgba(99,102,241,0.15)]">
@@ -135,7 +130,6 @@ export default function SignupPage() {
             </div>
           </div>
 
-          {/* Password Input */}
           <div className="space-y-2">
             <p className="text-sm font-medium text-zinc-300">Password</p>
             <div className="relative h-14 w-full rounded-xl border-2 border-zinc-700 bg-[#0A0A0A] transition-all hover:border-zinc-600 focus-within:border-indigo-500 focus-within:shadow-[0_0_0_4px_rgba(99,102,241,0.15)]">
@@ -157,7 +151,6 @@ export default function SignupPage() {
             </div>
           </div>
 
-          {/* Confirm Password Input */}
           <div className="space-y-2">
             <p className="text-sm font-medium text-zinc-300">
               Confirm Password
@@ -183,7 +176,33 @@ export default function SignupPage() {
             </div>
           </div>
 
-          {/* Checkbox */}
+          {/*  Role Selection  */}
+          <div className="flex flex-col gap-4">
+            <Label className="text-white">Subscription plan</Label>
+            <RadioGroup
+              defaultValue="seeker"
+              name="role"
+              orientation="horizontal"
+            >
+              <Radio value="seeker">
+                <Radio.Control>
+                  <Radio.Indicator />
+                </Radio.Control>
+                <Radio.Content>
+                  <Label className="text-white">Job Seeker</Label>
+                </Radio.Content>
+              </Radio>
+              <Radio value="recruiter">
+                <Radio.Control>
+                  <Radio.Indicator />
+                </Radio.Control>
+                <Radio.Content>
+                  <Label className="text-white">Recruiter</Label>
+                </Radio.Content>
+              </Radio>
+            </RadioGroup>
+          </div>
+
           <div className="pt-2">
             <Checkbox size="sm" classNames={{ label: "text-sm text-zinc-400" }}>
               I agree to the{" "}

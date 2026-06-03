@@ -7,7 +7,6 @@ export default function HeroSection() {
 
   return (
     <div className="w-full min-h-screen bg-[#070709] text-white flex flex-col justify-between font-sans relative overflow-hidden selection:bg-blue-600/30">
-      {/* ─── FULL PAGE BACKDROP IMAGE (Top to Bottom Cover) ─── */}
       <div
         className="absolute inset-0 w-full h-full bg-center bg-cover bg-no-repeat pointer-events-none opacity-90 z-0"
         style={{
@@ -15,7 +14,6 @@ export default function HeroSection() {
         }}
       />
 
-      {/* ─── TOP GRADIENT GLOW ─── */}
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-7xl h-96 bg-linear-to-b from-white/2 to-transparent blur-3xl pointer-events-none z-0" />
 
       {/* ─── BOTTOM GLOW LIGHTING ─── */}
