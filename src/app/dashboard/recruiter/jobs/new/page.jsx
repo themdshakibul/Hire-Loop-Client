@@ -17,6 +17,7 @@ import {
 } from "@heroui/react";
 import { Briefcase, Globe } from "@gravity-ui/icons";
 import { redirect } from "next/navigation";
+import { createJobs } from "@/lib/actions/jobs";
 
 export default function PostJobPage() {
   // Mock configuration for recruiter's authenticated state
@@ -68,7 +69,13 @@ export default function PostJobPage() {
       isPubliclyVisible: true,
     };
 
-    console.log(payload);
+    const res = await createJobs(payload);
+
+    if (res.inSertedId) {
+      toast.success("Job posted Successfully");
+      e.target.reset();
+      setIsRemote(false);
+    }
   };
 
   // Dark styles styled to match your image_988c20.png reference layout
