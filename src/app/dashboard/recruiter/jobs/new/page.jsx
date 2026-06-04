@@ -71,10 +71,11 @@ export default function PostJobPage() {
 
     const res = await createJobs(payload);
 
-    if (res.inSertedId) {
+    if (res.insertedId) {
       toast.success("Job posted Successfully");
       e.target.reset();
       setIsRemote(false);
+      redirect("/dashboard/recruiter/jobs");
     }
   };
 
