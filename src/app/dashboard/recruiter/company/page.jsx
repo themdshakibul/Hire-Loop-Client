@@ -14,6 +14,7 @@ import {
 } from "@heroui/react";
 import Image from "next/image";
 import {
+  ArrowUpRightFromSquare,
   ArrowUpToLine,
   Factory,
   Globe,
@@ -22,7 +23,6 @@ import {
   PersonFill,
   Text,
 } from "@gravity-ui/icons";
-import Link from "next/link";
 
 // Shared custom tailwind styles to mimic the dark theme mock
 const textInputClass =
@@ -67,7 +67,7 @@ export default function CompanyManager() {
 
     try {
       // Replace with your real process.env.NEXT_PUBLIC_IMGBB_API_KEY
-      const apiKey = "YOUR_IMGBB_API_KEY";
+      const apiKey = process.env.NEXT_PUBLIC_IMAGE_UPLOAD_API;
       const response = await fetch(
         `https://api.imgbb.com/1/upload?key=${apiKey}`,
         {
@@ -133,6 +133,7 @@ export default function CompanyManager() {
     setCompany(updatedCompanyData);
     setIsEditing(false);
     setUploadedLogoUrl("");
+    console.log("Submit company Profile Data ", updatedCompanyData);
   };
 
   // --- RENDERS ---
@@ -219,7 +220,10 @@ export default function CompanyManager() {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 text-sm">
           <div className="space-y-4">
             <div className="flex items-start gap-3">
-              <Link size={16} className="text-zinc-500 mt-0.5" />
+              <ArrowUpRightFromSquare
+                size={16}
+                className="text-zinc-500 mt-0.5"
+              />
               <div>
                 <span className="block text-zinc-500 font-medium text-xs uppercase tracking-wider">
                   Website URL
