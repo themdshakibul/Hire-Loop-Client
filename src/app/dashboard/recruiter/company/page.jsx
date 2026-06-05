@@ -23,6 +23,8 @@ import {
   PersonFill,
   Text,
 } from "@gravity-ui/icons";
+import { createCompany } from "@/lib/actions/companies";
+import toast from "react-hot-toast";
 
 // Shared custom tailwind styles to mimic the dark theme mock
 const textInputClass =
@@ -91,7 +93,7 @@ export default function CompanyManager() {
   };
 
   // --- FORM SUBMISSION ---
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
 
@@ -129,10 +131,17 @@ export default function CompanyManager() {
       logo: uploadedLogoUrl || company?.logo,
       status: company?.status || "Pending", // Mock initial status set by administrator
     };
-
     setCompany(updatedCompanyData);
-    setIsEditing(false);
+
+    const payload = await createCompany(updatedCompanyData);
+
+    if (payload.insertedId) {
+      toast.success("Company Profile Create Successfully!");
+    }
+
     setUploadedLogoUrl("");
+    setIsEditing(false);
+
     console.log("Submit company Profile Data ", updatedCompanyData);
   };
 
