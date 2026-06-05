@@ -205,7 +205,7 @@ export default function CompanyProfile({ recruiter, recruiterCompany }) {
   // --- RENDERS ---
 
   // VIEW 1: Prompt view when no corporate entity exists
-  if (!company && !isEditing) {
+  if (!company?._id && !isEditing) {
     return (
       <div className="max-w-2xl mx-auto my-12 bg-[#121214] border border-zinc-900 rounded-xl p-8 text-center flex flex-col items-center gap-4">
         <div className="w-16 h-16 rounded-full bg-zinc-900 flex items-center justify-center border border-zinc-800 text-zinc-400">
