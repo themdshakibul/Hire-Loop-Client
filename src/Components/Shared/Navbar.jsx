@@ -11,8 +11,7 @@ const Navbar = () => {
 
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
-  const { data, isPending } = authClient.useSession();
-  // console.log(data, isPending, "navbar");
+  const { data } = authClient.useSession();
 
   const user = data?.user;
 
