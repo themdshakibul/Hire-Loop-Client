@@ -39,9 +39,9 @@ const popoverClasses =
 const listItemClasses =
   "text-zinc-300 hover:bg-zinc-800 px-3 py-2 rounded-md text-sm cursor-pointer outline-none data-[selected=true]:bg-zinc-700 transition-colors";
 
-export default function CompanyProfile({ recruiter }) {
+export default function CompanyProfile({ recruiter, recruiterCompany }) {
   // --- STATE ---
-  const [company, setCompany] = useState(null); // Mock DB state. null = not registered
+  const [company, setCompany] = useState(recruiterCompany); // Mock DB state. null = not registered
   const [isEditing, setIsEditing] = useState(false);
   const [errors, setErrors] = useState({});
   const [isUploading, setIsUploading] = useState(false);
@@ -93,16 +93,73 @@ export default function CompanyProfile({ recruiter }) {
   };
 
   // --- FORM SUBMISSION ---
+  // const handleSubmit = async (e) => {
+  //   e.preventDefault();
+  //   const formData = new FormData(e.currentTarget);
+
+  //   const companyName = formData.get("companyName");
+  //   const industry = formData.get("industry");
+  //   const websiteUrl = formData.get("websiteUrl");
+  //   const location = formData.get("location");
+  //   const employeeCount = formData.get("employeeCount");
+  //   const description = formData.get("description");
+
+  //   // Simple validation schema matching design scope
+  //   const newErrors = {};
+  //   if (!companyName) newErrors.companyName = "Company name is required";
+  //   if (!industry) newErrors.industry = "Please select an industry";
+  //   if (!websiteUrl) newErrors.websiteUrl = "Website URL is required";
+  //   if (!location) newErrors.location = "Location is required";
+  //   if (!employeeCount) newErrors.employeeCount = "Select employee scale";
+  //   if (!uploadedLogoUrl && !company?.logo) newErrors.logo = "Logo is required";
+
+  //   if (Object.keys(newErrors).length > 0) {
+  //     setErrors(newErrors);
+  //     return;
+  //   }
+
+  //   setErrors({});
+
+  //   // Structure finalized data for database save operation
+  //   const updatedCompanyData = {
+  //     name: companyName,
+  //     industry,
+  //     websiteUrl,
+  //     location,
+  //     employeeCount,
+  //     description,
+  //     logo: uploadedLogoUrl || company?.logo,
+  //     status: company?.status || "Pending", // Mock initial status set by administrator
+  //     recruiterId: recruiter.id,
+  //   };
+  //   setCompany(updatedCompanyData);
+
+  //   const payload = await createCompany(updatedCompanyData);
+
+  //   if (payload.insertedId) {
+  //     toast.success("Company Profile Create Successfully!");
+  //   }
+
+  //   setUploadedLogoUrl("");
+  //   setIsEditing(false);
+
+  //   console.log("Submit company Profile Data ", updatedCompanyData);
+  // };
+
+  // --- FORM SUBMISSION ---
   const handleSubmit = async (e) => {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
 
     const companyName = formData.get("companyName");
-    const industry = formData.get("industry");
     const websiteUrl = formData.get("websiteUrl");
     const location = formData.get("location");
-    const employeeCount = formData.get("employeeCount");
     const description = formData.get("description");
+
+    // FIX: Fallback to the existing company state if the user didn't change the select dropdowns
+    const industry = formData.get("industry") || company?.industry;
+    const employeeCount =
+      formData.get("employeeCount") || company?.employeeCount;
 
     // Simple validation schema matching design scope
     const newErrors = {};
@@ -129,21 +186,20 @@ export default function CompanyProfile({ recruiter }) {
       employeeCount,
       description,
       logo: uploadedLogoUrl || company?.logo,
-      status: company?.status || "Pending", // Mock initial status set by administrator
+      status: company?.status || "Pending",
       recruiterId: recruiter.id,
     };
+
     setCompany(updatedCompanyData);
 
     const payload = await createCompany(updatedCompanyData);
 
     if (payload.insertedId) {
-      toast.success("Company Profile Create Successfully!");
+      toast.success("Company Profile Updated Successfully!");
     }
 
     setUploadedLogoUrl("");
     setIsEditing(false);
-
-    console.log("Submit company Profile Data ", updatedCompanyData);
   };
 
   // --- RENDERS ---
@@ -227,49 +283,48 @@ export default function CompanyProfile({ recruiter }) {
           </Button>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 text-sm">
+        {/* Updated Grid Layout with the 3 requested fields */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-sm">
+          {/* 1. Industry Category */}
           <div className="space-y-4">
             <div className="flex items-start gap-3">
-              <ArrowUpRightFromSquare
-                size={16}
-                className="text-zinc-500 mt-0.5"
-              />
+              <Layers size={16} className="text-zinc-500 mt-0.5" />
               <div>
                 <span className="block text-zinc-500 font-medium text-xs uppercase tracking-wider">
-                  Website URL
-                </span>
-                <a
-                  href={company.websiteUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-sky-400 hover:underline mt-0.5 block break-all"
-                >
-                  {company.websiteUrl}
-                </a>
-              </div>
-            </div>
-            <div className="flex items-start gap-3">
-              <Globe size={16} className="text-zinc-500 mt-0.5" />
-              <div>
-                <span className="block text-zinc-500 font-medium text-xs uppercase tracking-wider">
-                  Location
+                  INDUSTRY CATEGORY
                 </span>
                 <span className="text-zinc-300 mt-0.5 block">
-                  {company.location}
+                  {company.industry}
                 </span>
               </div>
             </div>
           </div>
 
+          {/* 2. Company Scale */}
           <div className="space-y-4">
             <div className="flex items-start gap-3">
               <PersonFill size={16} className="text-zinc-500 mt-0.5" />
               <div>
                 <span className="block text-zinc-500 font-medium text-xs uppercase tracking-wider">
-                  Employee Range
+                  COMPANY SCALE
                 </span>
                 <span className="text-zinc-300 mt-0.5 block">
                   {company.employeeCount}
+                </span>
+              </div>
+            </div>
+          </div>
+
+          {/* 3. Locations */}
+          <div className="space-y-4">
+            <div className="flex items-start gap-3">
+              <Globe size={16} className="text-zinc-500 mt-0.5" />
+              <div>
+                <span className="block text-zinc-500 font-medium text-xs uppercase tracking-wider">
+                  LOCATIONS
+                </span>
+                <span className="text-zinc-300 mt-0.5 block">
+                  {company.location}
                 </span>
               </div>
             </div>
