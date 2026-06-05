@@ -1,11 +1,12 @@
 import { getCompanyJobs } from "@/lib/api/jobs";
 import { Table, Chip, Button, Tooltip } from "@heroui/react";
 import { Eye, PencilToSquare, TrashBin } from "@gravity-ui/icons";
+import { getLoggedInRecruiterCompany } from "@/lib/api/companies";
 
 const RecruiterJobs = async () => {
-  const companyId = "company_123"; //todo:
-  const jobs = await getCompanyJobs(companyId);
-  console.log("Jobs for Company", jobs);
+  const company = await getLoggedInRecruiterCompany();
+  const jobs = (await getCompanyJobs(company?._id)) || [];
+
 
   const statusColorMap = {
     active: "success",
