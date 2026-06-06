@@ -108,6 +108,7 @@ import React from "react";
 import { Card, Button } from "@heroui/react";
 import { MapPin, Briefcase, ArrowRight, CircleDollar } from "@gravity-ui/icons";
 import Image from "next/image";
+import Link from "next/link";
 
 export default function JobCard({ job }) {
   if (!job) return null;
@@ -206,16 +207,16 @@ export default function JobCard({ job }) {
         <span className="text-[11px] text-neutral-500 font-medium">
           Posted 1 day ago
         </span>
-        <Button
+        <Link
+          href={`/jobs/${job._id}`}
           variant="light"
           className="text-neutral-200 group-hover:text-purple-400 font-semibold text-sm gap-2 px-0 bg-transparent min-w-0 transition-all duration-200"
           endContent={
             <ArrowRight className="w-4 h-4 transition-transform duration-200 group-hover:translate-x-1" />
           }
-          onClick={() => window.open(`#/apply/${job.companyId}`, "_blank")}
         >
           Apply Now
-        </Button>
+        </Link>
       </Card.Footer>
     </Card>
   );

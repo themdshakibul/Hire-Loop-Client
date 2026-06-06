@@ -14,6 +14,5 @@ export const serverMutation = async (path, data) => {
   });
 
   // handel 401, 404, 403, 500
-
   return res.json();
 };
