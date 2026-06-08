@@ -34,7 +34,7 @@ const Page = async ({ params }) => {
       : amount;
   };
 
-  // Humanize standard date formats (e.g. 2026-07-21 -> July 21, 2026)
+  // Humanize
   const formatDate = (dateString) => {
     if (!dateString) return "N/A";
     return new Date(dateString).toLocaleDateString("en-US", {
@@ -173,14 +173,13 @@ const Page = async ({ params }) => {
           </div>
 
           {/* Action Button: Apply Routing Link Container */}
-          <Button
-            as={Link}
+          <Link
             href={`/jobs/${id}/apply`}
             className="w-full bg-purple-600 hover:bg-purple-500 text-white font-medium py-6 rounded-xl shadow-lg transition-colors flex items-center justify-center gap-2"
             endContent={<ArrowUpRight className="w-4 h-4" />}
           >
             Apply For This Job
-          </Button>
+          </Link>
         </aside>
       </div>
     </main>
