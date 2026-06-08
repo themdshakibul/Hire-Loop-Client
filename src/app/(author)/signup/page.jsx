@@ -8,13 +8,17 @@ import { PiLockLight } from "react-icons/pi";
 import { FaGoogle, FaGithub } from "react-icons/fa";
 import { authClient } from "@/lib/auth-client";
 import toast from "react-hot-toast";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 
 export default function SignupPage() {
   const router = useRouter();
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
   const [isConfirmPasswordVisible, setIsConfirmPasswordVisible] =
     useState(false);
+
+  const serachParams = useSearchParams();
+  const redirectTo = serachParams.get("redirect") || "/";
+  console.log("Redirect to bt to page ", redirectTo);
 
   const onSubmit = async (e) => {
     e.preventDefault();
@@ -34,7 +38,7 @@ export default function SignupPage() {
 
     if (data) {
       toast.success("Successful Signup!");
-      router.push("/");
+      router.push(redirectTo);
     }
     if (error) {
       toast.error(error.message || "Something went wrong!");
@@ -229,7 +233,7 @@ export default function SignupPage() {
         <p className="mt-8 text-center text-sm text-zinc-500">
           Already have an account?{" "}
           <Link
-            href="/sigin"
+            href={`/sigin?redirect=${redirectTo}`}
             className="font-medium text-indigo-400 hover:text-indigo-300"
           >
             Sign In

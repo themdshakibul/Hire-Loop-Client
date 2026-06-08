@@ -7,12 +7,15 @@ import { PiLockLight } from "react-icons/pi";
 import { FaGoogle, FaGithub } from "react-icons/fa";
 import { authClient } from "@/lib/auth-client";
 import toast from "react-hot-toast";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 
 export default function LoginPage() {
   const router = useRouter();
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+
+  const serachParams = useSearchParams();
+  const redirectTo = serachParams.get("redirect") || "/";
 
   const onSubmit = async (e) => {
     e.preventDefault();
@@ -30,7 +33,7 @@ export default function LoginPage() {
 
     if (data) {
       toast.success("Successfully logged in!");
-      router.push("/");
+      router.push(redirectTo);
     }
     if (error) {
       toast.error(error.message || "Login failed");
@@ -177,7 +180,7 @@ export default function LoginPage() {
         <p className="mt-8 text-center text-sm text-zinc-500">
           Don&apos;t have an account?{" "}
           <Link
-            href="/signup"
+            href={`/signup?redirect=${redirectTo}`}
             className="font-medium text-indigo-400 hover:text-indigo-300"
           >
             Sign Up
