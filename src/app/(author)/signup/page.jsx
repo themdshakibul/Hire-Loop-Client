@@ -18,12 +18,12 @@ export default function SignupPage() {
 
   const serachParams = useSearchParams();
   const redirectTo = serachParams.get("redirect") || "/";
-  console.log("Redirect to bt to page ", redirectTo);
 
   const onSubmit = async (e) => {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
     const userData = Object.fromEntries(formData.entries());
+    const plan = userData.role === "seeker" ? "seeker_free" : "recruiter_free";
 
     if (userData.password !== userData.confirmPassword) {
       return toast.error("Passwords do not match!");
@@ -34,6 +34,7 @@ export default function SignupPage() {
       email: userData.email,
       password: userData.password,
       role: userData.role,
+      plan,
     });
 
     if (data) {

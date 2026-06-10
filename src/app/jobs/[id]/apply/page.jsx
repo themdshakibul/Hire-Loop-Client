@@ -5,6 +5,7 @@ import { ShieldExclamation, CircleInfo, Rocket } from "@gravity-ui/icons";
 import { getUseerSession } from "@/lib/core/session";
 import { getJobsById } from "@/lib/api/jobs";
 import JobApply from "./JobApply";
+import { getPlansById } from "@/lib/api/plans";
 // import { getPlanById } from "@/lib/api/plans";
 
 const ApplyPage = async ({ params }) => {
@@ -43,12 +44,7 @@ const ApplyPage = async ({ params }) => {
 
   const applications = await getApplicationsByApplicant(user.id);
 
-  // const plan = await getPlanById(user?.plan || "seeker_free");
-  const plan = [
-    {
-      name: "seeker",
-    },
-  ];
+  const plan = await getPlansById(user?.plan || "seeker_free");
 
   const job = await getJobsById(id);
 
