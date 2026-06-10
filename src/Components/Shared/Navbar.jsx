@@ -30,7 +30,7 @@ const Navbar = () => {
     },
     {
       name: "Pricing",
-      href: "/pricing",
+      href: "/plans",
     },
   ];
 
