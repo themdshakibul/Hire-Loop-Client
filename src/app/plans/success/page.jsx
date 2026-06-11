@@ -3,7 +3,7 @@ import { redirect } from "next/navigation";
 import Link from "next/link";
 // Gravity UI Icons for a high-quality production finish
 import { CircleCheckFill, Envelope, ArrowLeft } from "@gravity-ui/icons";
-// import { createSubscription } from "@/lib/actions/subscriptions";
+import { createSubCriptions } from "@/lib/actions/subcriptions";
 
 export default async function Success({ searchParams }) {
   const { session_id } = await searchParams;
@@ -29,7 +29,7 @@ export default async function Success({ searchParams }) {
       planId: metadata.planId,
     };
     // update the user table about the new plan
-    const result = await createSubscription(subsInfo);
+    const result = await createSubCriptions(subsInfo);
     console.log(result);
 
     return (
