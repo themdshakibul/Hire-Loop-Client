@@ -93,60 +93,6 @@ export default function CompanyProfile({ recruiter, recruiterCompany }) {
   };
 
   // --- FORM SUBMISSION ---
-  // const handleSubmit = async (e) => {
-  //   e.preventDefault();
-  //   const formData = new FormData(e.currentTarget);
-
-  //   const companyName = formData.get("companyName");
-  //   const industry = formData.get("industry");
-  //   const websiteUrl = formData.get("websiteUrl");
-  //   const location = formData.get("location");
-  //   const employeeCount = formData.get("employeeCount");
-  //   const description = formData.get("description");
-
-  //   // Simple validation schema matching design scope
-  //   const newErrors = {};
-  //   if (!companyName) newErrors.companyName = "Company name is required";
-  //   if (!industry) newErrors.industry = "Please select an industry";
-  //   if (!websiteUrl) newErrors.websiteUrl = "Website URL is required";
-  //   if (!location) newErrors.location = "Location is required";
-  //   if (!employeeCount) newErrors.employeeCount = "Select employee scale";
-  //   if (!uploadedLogoUrl && !company?.logo) newErrors.logo = "Logo is required";
-
-  //   if (Object.keys(newErrors).length > 0) {
-  //     setErrors(newErrors);
-  //     return;
-  //   }
-
-  //   setErrors({});
-
-  //   // Structure finalized data for database save operation
-  //   const updatedCompanyData = {
-  //     name: companyName,
-  //     industry,
-  //     websiteUrl,
-  //     location,
-  //     employeeCount,
-  //     description,
-  //     logo: uploadedLogoUrl || company?.logo,
-  //     status: company?.status || "Pending", // Mock initial status set by administrator
-  //     recruiterId: recruiter.id,
-  //   };
-  //   setCompany(updatedCompanyData);
-
-  //   const payload = await createCompany(updatedCompanyData);
-
-  //   if (payload.insertedId) {
-  //     toast.success("Company Profile Create Successfully!");
-  //   }
-
-  //   setUploadedLogoUrl("");
-  //   setIsEditing(false);
-
-  //   console.log("Submit company Profile Data ", updatedCompanyData);
-  // };
-
-  // --- FORM SUBMISSION ---
   const handleSubmit = async (e) => {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
@@ -180,13 +126,13 @@ export default function CompanyProfile({ recruiter, recruiterCompany }) {
     // Structure finalized data for database save operation
     const updatedCompanyData = {
       name: companyName,
-      industry,
+      industry: industry || "Technology",
       websiteUrl,
       location,
-      employeeCount,
+      employeeCount: employeeCount || "1-10 employees",
       description,
-      logo: uploadedLogoUrl || company?.logo,
-      status: company?.status || "Pending",
+      logo: uploadedLogoUrl || (company ? company?.logo : ""),
+      status: company && company.status ? company?.status : "Pending",
       recruiterId: recruiter.id,
     };
 
@@ -195,6 +141,9 @@ export default function CompanyProfile({ recruiter, recruiterCompany }) {
     const payload = await createCompany(updatedCompanyData);
 
     if (payload.insertedId) {
+      const saveCompany = { ...company, _id: payload.insertedId };
+      setCompany(saveCompany);
+
       toast.success("Company Profile Updated Successfully!");
     }
 

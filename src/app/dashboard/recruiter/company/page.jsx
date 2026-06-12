@@ -6,6 +6,7 @@ import { getRecruiterCompany } from "@/lib/api/companies";
 const CompanyPage = async () => {
   const user = await getUseerSession();
   const company = await getRecruiterCompany(user?.id);
+  console.log("company Before Created", company);
 
   return (
     <div>
