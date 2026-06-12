@@ -25,14 +25,22 @@ const Navbar = () => {
       href: "/companies",
     },
     {
-      name: "Recruiters",
-      href: "/recruiters",
-    },
-    {
       name: "Pricing",
       href: "/plans",
     },
   ];
+
+  const deshBoardLinks = {
+    seeker: "dashboard/seeker",
+    recruiter: "dashboard/recruiter",
+  };
+
+  if (user?.email) {
+    navLinks.push({
+      name: "Dashboard",
+      href: deshBoardLinks[user?.role || "seeker"],
+    });
+  }
 
   return (
     <nav
