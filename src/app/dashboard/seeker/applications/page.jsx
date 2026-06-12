@@ -1,6 +1,7 @@
 import { getApplicationsByApplicant } from "@/lib/api/applications";
 import { getUseerSession } from "@/lib/core/session";
 import React from "react";
+import ApplicationsTable from "./ApplicationsTable";
 
 const AppliactionsPage = async () => {
   const user = await getUseerSession();
@@ -8,7 +9,7 @@ const AppliactionsPage = async () => {
 
   return (
     <div>
-      <h2>Applications Page {jobs.length}</h2>
+      <ApplicationsTable jobs={jobs} />
     </div>
   );
 };
