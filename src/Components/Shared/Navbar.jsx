@@ -33,6 +33,7 @@ const Navbar = () => {
   const deshBoardLinks = {
     seeker: "dashboard/seeker",
     recruiter: "dashboard/recruiter",
+    admin: "dashboard/admin",
   };
 
   if (user?.email) {

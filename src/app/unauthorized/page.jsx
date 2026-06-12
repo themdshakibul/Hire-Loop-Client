@@ -31,7 +31,7 @@ export default function UnauthorizedPage() {
         {/* Action Buttons */}
         <div className="flex flex-col sm:flex-row gap-3 justify-center pt-4">
           <Link
-            href="/auth/signin"
+            href="/sigin"
             className="flex items-center justify-center gap-2 rounded-lg bg-indigo-600 px-5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 transition-colors"
           >
             <BiLogIn className="h-4 w-4" />

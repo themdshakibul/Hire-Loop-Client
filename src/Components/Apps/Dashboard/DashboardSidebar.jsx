@@ -13,6 +13,7 @@ import {
   Person,
 } from "@gravity-ui/icons";
 import { Button, Drawer } from "@heroui/react";
+import { Building, Users } from "lucide-react";
 import Link from "next/link";
 
 const DashboardSidebar = async () => {
@@ -49,18 +50,19 @@ const DashboardSidebar = async () => {
     { icon: Gear, href: "/settings", label: "Settings" },
   ];
 
-  // const adminNavLinks = [
-  //   { icon: House, href: "/dashboard/admin", label: "Dashboard" },
-  //   { icon: Users, href: "/dashboard/admin/users", label: "Users" },
-  //   { icon: Building, href: "/dashboard/admin/companies", label: "Companies" },
-  //   { icon: Briefcase, href: "/dashboard/admin/jobs", label: "Jobs" },
-  //   { icon: CreditCard, href: "/dashboard/admin/payments", label: "Payments" },
-  //   { icon: Gear, href: "/dashboard/admin/settings", label: "Settings" },
-  // ];
+  const adminNavLinks = [
+    { icon: House, href: "/dashboard/admin", label: "Dashboard" },
+    { icon: Users, href: "/dashboard/admin/users", label: "Users" },
+    { icon: Building, href: "/dashboard/admin/companies", label: "Companies" },
+    { icon: Briefcase, href: "/dashboard/admin/jobs", label: "Jobs" },
+    { icon: CreditCard, href: "/dashboard/admin/payments", label: "Payments" },
+    { icon: Gear, href: "/dashboard/admin/settings", label: "Settings" },
+  ];
 
   const navLinkMap = {
     seeker: seekerNavLinks,
     recruiter: recruiterNavLinks,
+    admin: adminNavLinks,
   };
 
   const navItems = navLinkMap[user?.role || "seeker"];
