@@ -19,10 +19,19 @@ export const serverFetch = async (path) => {
   return res.json();
 };
 
+export const proctedFetch = async (path) => {
+  const res = await fetch(`${baseUrl}${path}`, {
+    headers: await authHeder(),
+  });
+
+  // hendel 401, 404, 403
+  return res.json();
+};
+
 export const serverMutation = async (path, data, method = "POST") => {
   const res = await fetch(`${baseUrl}${path}`, {
     method: method,
-    headers: { "Content-Type": "application/json" },
+    headers: { "Content-Type": "application/json", ...(await authHeder()) },
     body: JSON.stringify(data),
   });
 
