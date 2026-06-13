@@ -1,4 +1,17 @@
+import { getUserToken } from "./session";
+
 const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
+
+export const authHeder = async () => {
+  const token = await getUserToken();
+  const header = token
+    ? {
+        authorization: `Bearer ${token}`,
+      }
+    : {};
+
+  return header;
+};
 
 export const serverFetch = async (path) => {
   const res = await fetch(`${baseUrl}${path}`);
