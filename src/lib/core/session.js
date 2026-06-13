@@ -9,6 +9,14 @@ export const getUseerSession = async () => {
   return session?.user || null;
 };
 
+export const getUserToken = async () => {
+  const sesson = await auth.api.getSession({
+    headers: await headers(),
+  });
+
+  return sesson?.session?.token || null;
+};
+
 export const requreRole = async (role) => {
   const user = await getUseerSession();
 
