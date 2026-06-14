@@ -31,7 +31,7 @@ export const proctedFetch = async (path) => {
 export const serverMutation = async (path, data, method = "POST") => {
   const res = await fetch(`${baseUrl}${path}`, {
     method: method,
-    headers: { "Content-Type": "application/json", ...(await authHeder()) },
+    headers: { "Content-Type": "application/json", ...await authHeder() },
     body: JSON.stringify(data),
   });
 
