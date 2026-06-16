@@ -11,7 +11,7 @@ export default async function Page({ searchParams }) {
     isRemote: filter.isRemote === "true" ? true : false,
   };
 
-  const querySearch = new URLSearchParams(filterObj);
+  const querySearch = new URLSearchParams(filter);
   const queryString = querySearch.toString();
 
   console.log("Search filer", filter, queryString);
