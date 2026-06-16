@@ -1,23 +1,21 @@
 import JobListingContainer from "@/Components/Apps/Jobs/JobListingContainer";
 import { getJobs } from "@/lib/api/jobs";
 
-export default async function JobsPage() {
-  // Fetch all jobs once on the server side
+export default async function Page() {
+  // Fetched server-side on the initial request
   const jobs = await getJobs();
 
   return (
-    <div className="bg-black text-white p-6 md:p-12 min-h-screen">
-      <div className="container px-2 mx-auto">
-        <div className="pb-10 space-y-2">
-          <h2 className="text-4xl font-semibold">Open Positions</h2>
-          <p className="font-semibold text-zinc-400">
-            Discover your next engineering challenge.
-          </p>
-        </div>
-
-        {/* Pass the server data down to the client wrapper */}
-        <JobListingContainer initialJobs={jobs || []} />
+    <div className="w-full min-h-screen bg-zinc-950 p-6 md:p-12 text-white">
+      <div className="container mx-auto mb-10">
+        <h1 className="text-4xl font-bold tracking-tight">Open Positions</h1>
+        <p className="text-zinc-400 mt-2">
+          Discover your next engineering challenge.
+        </p>
       </div>
+
+      {/* Pass data to the Client Wrapper to handle filtering interactivity */}
+      <JobListingContainer jobs={jobs || []} />
     </div>
   );
 }

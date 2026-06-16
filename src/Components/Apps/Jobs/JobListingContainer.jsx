@@ -1,63 +1,93 @@
 "use client";
 
-import React, { useState } from "react";
-import JobsFilters from "./JobsFilters";
+import React, { useState, useEffect } from "react";
 import JobCard from "./JobCard";
+import JobFilters from "./JobsFilters";
+import { useRouter } from "next/navigation";
 
-export default function JobListingContainer({ initialJobs }) {
-  const [filteredJobs, setFilteredJobs] = useState(initialJobs);
+export default function JobListingContainer({ jobs }) {
+  const [searchQuery, setSearchQuery] = useState("");
+  const [selectedType, setSelectedType] = useState("all");
+  const [selectedCategory, setSelectedCategory] = useState("all");
+  const [isRemoteOnly, setIsRemoteOnly] = useState(false);
 
-  const handleFilterChange = ({ search, category, jobType, workMode }) => {
-    let updatedJobs = [...initialJobs];
+  const router = useRouter();
 
-    // 1. Text Search Filter (Title or Company)
-    if (search) {
-      const query = search.toLowerCase();
-      updatedJobs = updatedJobs.filter(
-        (job) =>
-          job.jobTitle?.toLowerCase().includes(query) ||
-          job.companyName?.toLowerCase().includes(query),
-      );
+  useEffect(() => {
+    const sp = new URLSearchParams();
+
+    if (searchQuery) {
+      sp.set("search", searchQuery);
     }
 
-    // 2. Category Filter
-    if (category) {
-      updatedJobs = updatedJobs.filter((job) => job.jobCategory === category);
+    if (selectedType !== "all") {
+      sp.set("jobType", selectedType);
+    }
+    if (selectedCategory !== "all") {
+      sp.set("jobCategory", selectedCategory);
     }
 
-    // 3. Job Type Filter
-    if (jobType) {
-      updatedJobs = updatedJobs.filter((job) => job.jobType === jobType);
+    if (isRemoteOnly) {
+      sp.set("isRemote", true);
     }
 
-    // 4. Work Mode Filter (Maps true/false from your schema's isRemote)
-    if (workMode) {
-      const targetRemoteStatus = workMode === "remote";
-      updatedJobs = updatedJobs.filter(
-        (job) => job.isRemote === targetRemoteStatus,
-      );
-    }
+    // if (page) {
+    //   sp.set("page", page);
+    // }
 
-    setFilteredJobs(updatedJobs);
-  };
+
+    const path = `?${sp.toString()}`;
+    router.push(path);
+  }, [router, selectedType, selectedCategory, isRemoteOnly, searchQuery]);
+
+  // Compute matched filter rows instantly
+  // const jobs = useMemo(() => {
+  //   return jobs.filter((job) => {
+  //     const matchesSearch =
+  //       job.jobTitle?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+  //       job.companyName?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+  //       job.requirements?.toLowerCase().includes(searchQuery.toLowerCase());
+
+  //     const matchesType =
+  //       selectedType === "all" || job.jobType === selectedType;
+  //     const matchesCategory =
+  //       selectedCategory === "all" || job.jobCategory === selectedCategory;
+  //     const matchesRemote = !isRemoteOnly || job.isRemote === true;
+
+  //     return matchesSearch && matchesType && matchesCategory && matchesRemote;
+  //   });
+  // }, [searchQuery, selectedType, selectedCategory, isRemoteOnly, jobs]);
 
   return (
-    <div className="space-y-10">
-      {/* Filter inputs panel */}
-      <JobsFilters onFilterChange={handleFilterChange} />
+    <>
+      <JobFilters
+        searchQuery={searchQuery}
+        setSearchQuery={setSearchQuery}
+        selectedType={selectedType}
+        setSelectedType={setSelectedType}
+        selectedCategory={selectedCategory}
+        setSelectedCategory={setSelectedCategory}
+        isRemoteOnly={isRemoteOnly}
+        setIsRemoteOnly={setIsRemoteOnly}
+      />
 
-      {/* Grid displaying the client-filtered results */}
-      {filteredJobs.length > 0 ? (
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-10 justify-items-center">
-          {filteredJobs.map((job) => (
-            <JobCard key={job._id?.$oid || job._id} job={job} />
+      <div className="container mx-auto mb-6 text-sm text-zinc-500">
+        Showing {jobs.length} position{jobs.length !== 1 && "s"}
+      </div>
+
+      {jobs.length > 0 ? (
+        <div className="container mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 justify-items-center">
+          {jobs.map((jobItem) => (
+            <JobCard key={jobItem._id?.$oid || jobItem._id} job={jobItem} />
           ))}
         </div>
       ) : (
-        <div className="text-center py-16 text-zinc-500 border border-dashed border-zinc-800 rounded-xl">
-          No positions match your selected criteria.
+        <div className="text-center py-20 border border-dashed border-zinc-800 rounded-[32px] max-w-7xl mx-auto">
+          <p className="text-zinc-500 text-lg">
+            No positions match your search criteria.
+          </p>
         </div>
       )}
-    </div>
+    </>
   );
 }

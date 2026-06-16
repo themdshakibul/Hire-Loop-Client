@@ -1,211 +1,164 @@
-"use client";
+import React from "react";
+import {
+  TextField,
+  InputGroup,
+  Select,
+  ListBox,
+  Checkbox,
+} from "@heroui/react";
+import { Magnifier, ChevronDown } from "@gravity-ui/icons";
 
-import React, { useState, useEffect } from "react";
-import { InputGroup, TextField, Label, Select, ListBox } from "@heroui/react";
-
-export default function JobsFilters({ onFilterChange }) {
-  const [search, setSearch] = useState("");
-  const [category, setCategory] = useState("");
-  const [jobType, setJobType] = useState("");
-  const [workMode, setWorkMode] = useState("");
-
-  // Trigger search filtering instantly when select keys change
-  const handleSelectUpdate = (type, value) => {
-    const filters = { search, category, jobType, workMode };
-
-    if (type === "category") {
-      filters.category = value;
-      setCategory(value);
-    }
-    if (type === "jobType") {
-      filters.jobType = value;
-      setJobType(value);
-    }
-    if (type === "workMode") {
-      filters.workMode = value;
-      setWorkMode(value);
-    }
-
-    onFilterChange(filters);
-  };
-
-  // Debounce text search by 300ms so typing feels completely smooth
-  useEffect(() => {
-    const delayDebounce = setTimeout(() => {
-      onFilterChange({ search, category, jobType, workMode });
-    }, 300);
-
-    return () => clearTimeout(delayDebounce);
-  }, [category, jobType, onFilterChange, search, workMode]);
-
+export default function JobFilters({
+  searchQuery,
+  setSearchQuery,
+  selectedType,
+  setSelectedType,
+  selectedCategory,
+  setSelectedCategory,
+  isRemoteOnly,
+  setIsRemoteOnly,
+}) {
   return (
-    <div className="flex flex-col md:flex-row gap-4 items-end bg-zinc-950 p-4 rounded-xl border border-zinc-800 text-white">
-      {/* 1. SEARCH INPUT */}
-      <div className="w-full md:flex-1">
-        <TextField>
-          <Label className="text-zinc-300 text-sm mb-1 block">
-            Search Jobs
-          </Label>
-          <InputGroup className="bg-zinc-900 border border-zinc-700 rounded-lg text-white">
-            <InputGroup.Prefix className="pl-3 text-zinc-500">
-              🔍
-            </InputGroup.Prefix>
-            <InputGroup.Input
-              placeholder="Search by title or company..."
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-              className="bg-transparent text-white placeholder-zinc-500 focus:outline-none py-2 px-2 w-full"
+    <div className="flex flex-col gap-4 bg-zinc-900/50 p-6 rounded-[24px] border border-zinc-800/80 container mx-auto mb-10">
+      <div className="grid grid-cols-1 md:grid-cols-12 gap-4 items-end">
+        {/* 1. Search Text Field - Span 5 columns */}
+        <div className="md:col-span-5">
+          <TextField
+            value={searchQuery}
+            onChange={(value) => setSearchQuery(value)}
+            className="w-full"
+          >
+            <span className="text-sm font-medium text-zinc-400 block mb-2">
+              Search Jobs
+            </span>
+            <InputGroup className="bg-zinc-800 border-zinc-700 focus-within:border-purple-500 rounded-xl transition-all">
+              <InputGroup.Prefix className="pl-3 text-zinc-500">
+                <Magnifier className="w-4 h-4" />
+              </InputGroup.Prefix>
+              <InputGroup.Input
+                placeholder="Title, company, or keywords..."
+                className="bg-transparent text-white placeholder-zinc-500 text-sm py-2.5 px-3 outline-none w-full"
+              />
+            </InputGroup>
+          </TextField>
+        </div>
+
+        {/* 2. Job Type Select Filter - Span 3 columns */}
+        <div className="md:col-span-3">
+          <span className="text-sm font-medium text-zinc-400 block mb-2">
+            Job Type
+          </span>
+          <Select
+            selectedKey={selectedType}
+            onSelectionChange={(key) => setSelectedType(key)}
+          >
+            <Select.Trigger className="w-full flex items-center justify-between bg-zinc-800 text-white border border-zinc-700 hover:border-zinc-600 rounded-xl py-2.5 px-4 text-sm font-normal transition-all">
+              <Select.Value>
+                {selectedType === "all"
+                  ? "All Types"
+                  : selectedType.replace("-", " ")}
+              </Select.Value>
+              <Select.Indicator>
+                <ChevronDown className="w-4 h-4 text-zinc-400" />
+              </Select.Indicator>
+            </Select.Trigger>
+
+            <Select.Popover className="bg-zinc-800 border border-zinc-700 rounded-xl shadow-xl mt-1 overflow-hidden z-50">
+              <ListBox className="p-1">
+                <ListBox.Item
+                  id="all"
+                  className="flex items-center justify-between text-zinc-200 hover:bg-purple-600 hover:text-white rounded-lg px-3 py-2 text-sm cursor-pointer capitalize"
+                >
+                  <span>All Types</span>
+                </ListBox.Item>
+                <ListBox.Item
+                  id="full-time"
+                  className="flex items-center justify-between text-zinc-200 hover:bg-purple-600 hover:text-white rounded-lg px-3 py-2 text-sm cursor-pointer capitalize"
+                >
+                  <span>Full-time</span>
+                </ListBox.Item>
+                <ListBox.Item
+                  id="part-time"
+                  className="flex items-center justify-between text-zinc-200 hover:bg-purple-600 hover:text-white rounded-lg px-3 py-2 text-sm cursor-pointer capitalize"
+                >
+                  <span>Part-time</span>
+                </ListBox.Item>
+                <ListBox.Item
+                  id="contract"
+                  className="flex items-center justify-between text-zinc-200 hover:bg-purple-600 hover:text-white rounded-lg px-3 py-2 text-sm cursor-pointer capitalize"
+                >
+                  <span>Contract</span>
+                </ListBox.Item>
+              </ListBox>
+            </Select.Popover>
+          </Select>
+        </div>
+
+        {/* 3. Category Select Filter - Span 3 columns */}
+        <div className="md:col-span-3">
+          <span className="text-sm font-medium text-zinc-400 block mb-2">
+            Category
+          </span>
+          <Select
+            selectedKey={selectedCategory}
+            onSelectionChange={(key) => setSelectedCategory(key)}
+          >
+            <Select.Trigger className="w-full flex items-center justify-between bg-zinc-800 text-white border border-zinc-700 hover:border-zinc-600 rounded-xl py-2.5 px-4 text-sm font-normal transition-all">
+              <Select.Value>
+                {selectedCategory === "all"
+                  ? "All Categories"
+                  : selectedCategory}
+              </Select.Value>
+              <Select.Indicator>
+                <ChevronDown className="w-4 h-4 text-zinc-400" />
+              </Select.Indicator>
+            </Select.Trigger>
+
+            <Select.Popover className="bg-zinc-800 border border-zinc-700 rounded-xl shadow-xl mt-1 overflow-hidden z-50">
+              <ListBox className="p-1">
+                <ListBox.Item
+                  id="all"
+                  className="text-zinc-200 hover:bg-purple-600 hover:text-white rounded-lg px-3 py-2 text-sm cursor-pointer capitalize"
+                >
+                  <span>All Categories</span>
+                </ListBox.Item>
+                <ListBox.Item
+                  id="engineering"
+                  className="text-zinc-200 hover:bg-purple-600 hover:text-white rounded-lg px-3 py-2 text-sm cursor-pointer capitalize"
+                >
+                  <span>Engineering</span>
+                </ListBox.Item>
+                <ListBox.Item
+                  id="design"
+                  className="text-zinc-200 hover:bg-purple-600 hover:text-white rounded-lg px-3 py-2 text-sm cursor-pointer capitalize"
+                >
+                  <span>Design</span>
+                </ListBox.Item>
+                <ListBox.Item
+                  id="product"
+                  className="text-zinc-200 hover:bg-purple-600 hover:text-white rounded-lg px-3 py-2 text-sm cursor-pointer capitalize"
+                >
+                  <span>Product</span>
+                </ListBox.Item>
+              </ListBox>
+            </Select.Popover>
+          </Select>
+        </div>
+
+        {/* 4. Remote Checkbox Filter - Span 1 column */}
+        <div className="md:col-span-1 flex items-center justify-start md:justify-center h-10 pb-1">
+          <label className="flex items-center gap-2 cursor-pointer select-none">
+            <input
+              type="checkbox"
+              checked={isRemoteOnly}
+              onChange={(e) => setIsRemoteOnly(e.target.checked)}
+              className="accent-purple-500 w-4 h-4 rounded bg-zinc-800 border-zinc-700 cursor-pointer"
             />
-          </InputGroup>
-        </TextField>
-      </div>
-
-      {/* 2. JOB CATEGORY FILTER */}
-      <div className="w-48">
-        <Select
-          className="w-48"
-          placeholder="All Categories"
-          selectedKey={category}
-          onSelectionChange={(val) => handleSelectUpdate("category", val)}
-        >
-          <Label className="text-zinc-300 text-sm mb-1 block">Category</Label>
-          <Select.Trigger className="bg-zinc-900 border border-zinc-700 rounded-lg p-2 flex justify-between items-center w-full text-left text-zinc-200 hover:border-zinc-500 transition-colors">
-            <Select.Value />
-            <Select.Indicator className="text-zinc-400" />
-          </Select.Trigger>
-          <Select.Popover className="w-48 bg-zinc-900 border border-zinc-800 rounded-lg shadow-xl mt-1 text-zinc-200">
-            <ListBox className="p-1">
-              <ListBox.Item
-                id=""
-                textValue="All Categories"
-                className="hover:bg-zinc-800 p-2 rounded cursor-pointer transition-colors block text-zinc-200"
-              >
-                All Categories
-                <ListBox.ItemIndicator />
-              </ListBox.Item>
-              <ListBox.Item
-                id="Engineering"
-                textValue="Engineering"
-                className="hover:bg-zinc-800 p-2 rounded cursor-pointer transition-colors block text-zinc-200"
-              >
-                Engineering
-                <ListBox.ItemIndicator />
-              </ListBox.Item>
-              <ListBox.Item
-                id="Design"
-                textValue="Design"
-                className="hover:bg-zinc-800 p-2 rounded cursor-pointer transition-colors block text-zinc-200"
-              >
-                Design
-                <ListBox.ItemIndicator />
-              </ListBox.Item>
-              <ListBox.Item
-                id="Marketing"
-                textValue="Marketing"
-                className="hover:bg-zinc-800 p-2 rounded cursor-pointer transition-colors block text-zinc-200"
-              >
-                Marketing
-                <ListBox.ItemIndicator />
-              </ListBox.Item>
-            </ListBox>
-          </Select.Popover>
-        </Select>
-      </div>
-
-      {/* 3. JOB TYPE FILTER */}
-      <div className="w-44">
-        <Select
-          className="w-44"
-          placeholder="All Types"
-          selectedKey={jobType}
-          onSelectionChange={(val) => handleSelectUpdate("jobType", val)}
-        >
-          <Label className="text-zinc-300 text-sm mb-1 block">Job Type</Label>
-          <Select.Trigger className="bg-zinc-900 border border-zinc-700 rounded-lg p-2 flex justify-between items-center w-full text-left text-zinc-200 hover:border-zinc-500 transition-colors">
-            <Select.Value />
-            <Select.Indicator className="text-zinc-400" />
-          </Select.Trigger>
-          <Select.Popover className="w-44 bg-zinc-900 border border-zinc-800 rounded-lg shadow-xl mt-1 text-zinc-200">
-            <ListBox className="p-1">
-              <ListBox.Item
-                id=""
-                textValue="All Types"
-                className="hover:bg-zinc-800 p-2 rounded cursor-pointer transition-colors block text-zinc-200"
-              >
-                All Types
-                <ListBox.ItemIndicator />
-              </ListBox.Item>
-              <ListBox.Item
-                id="full-time"
-                textValue="Full-time"
-                className="hover:bg-zinc-800 p-2 rounded cursor-pointer transition-colors block text-zinc-200"
-              >
-                Full-time
-                <ListBox.ItemIndicator />
-              </ListBox.Item>
-              <ListBox.Item
-                id="part-time"
-                textValue="Part-time"
-                className="hover:bg-zinc-800 p-2 rounded cursor-pointer transition-colors block text-zinc-200"
-              >
-                Part-time
-                <ListBox.ItemIndicator />
-              </ListBox.Item>
-              <ListBox.Item
-                id="contract"
-                textValue="Contract"
-                className="hover:bg-zinc-800 p-2 rounded cursor-pointer transition-colors block text-zinc-200"
-              >
-                Contract
-                <ListBox.ItemIndicator />
-              </ListBox.Item>
-            </ListBox>
-          </Select.Popover>
-        </Select>
-      </div>
-
-      {/* 4. WORK MODE FILTER */}
-      <div className="w-40">
-        <Select
-          className="w-40"
-          placeholder="All Modes"
-          selectedKey={workMode}
-          onSelectionChange={(val) => handleSelectUpdate("workMode", val)}
-        >
-          <Label className="text-zinc-300 text-sm mb-1 block">Work Mode</Label>
-          <Select.Trigger className="bg-zinc-900 border border-zinc-700 rounded-lg p-2 flex justify-between items-center w-full text-left text-zinc-200 hover:border-zinc-500 transition-colors">
-            <Select.Value />
-            <Select.Indicator className="text-zinc-400" />
-          </Select.Trigger>
-          <Select.Popover className="w-40 bg-zinc-900 border border-zinc-800 rounded-lg shadow-xl mt-1 text-white">
-            <ListBox className="p-1">
-              <ListBox.Item
-                id=""
-                textValue="All Modes"
-                className="hover:bg-zinc-800 p-2 rounded cursor-pointer transition-colors block text-zinc-200"
-              >
-                All Modes
-                <ListBox.ItemIndicator />
-              </ListBox.Item>
-              <ListBox.Item
-                id="remote"
-                textValue="Remote"
-                className="hover:bg-zinc-800 p-2 rounded cursor-pointer transition-colors block text-zinc-200"
-              >
-                Remote
-                <ListBox.ItemIndicator />
-              </ListBox.Item>
-              <ListBox.Item
-                id="onsite"
-                textValue="On-site"
-                className="hover:bg-zinc-800 p-2 rounded cursor-pointer transition-colors block text-zinc-200"
-              >
-                On-site
-                <ListBox.ItemIndicator />
-              </ListBox.Item>
-            </ListBox>
-          </Select.Popover>
-        </Select>
+            <span className="text-sm font-medium text-zinc-300 md:hidden lg:inline">
+              Remote
+            </span>
+          </label>
+        </div>
       </div>
     </div>
   );
