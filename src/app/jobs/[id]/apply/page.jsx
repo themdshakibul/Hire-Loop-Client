@@ -1,21 +1,19 @@
-import { getJobById } from "@/lib/api/jobs";
-import { getUserSession } from "@/lib/core/session";
 import { redirect } from "next/navigation";
-import React from "react";
-import JobApply from "./JobApply";
 import { getApplicationsByApplicant } from "@/lib/api/applications";
 import Link from "next/link";
-// Importing a few Gravity UI icons to make it look clean and consistent
 import { ShieldExclamation, CircleInfo, Rocket } from "@gravity-ui/icons";
-import { getPlanById } from "@/lib/api/plans";
+import { getUseerSession } from "@/lib/core/session";
+import { getJobsById } from "@/lib/api/jobs";
+import JobApply from "./JobApply";
+import { getPlansById } from "@/lib/api/plans";
+// import { getPlanById } from "@/lib/api/plans";
 
 const ApplyPage = async ({ params }) => {
   const { id } = await params;
 
-  const user = await getUserSession();
-  console.log("Current User Session:", user);
+  const user = await getUseerSession();
   if (!user) {
-    redirect(`/auth/signin?redirect=/jobs/${id}/apply`);
+    redirect(`/sigin?redirect=/jobs/${id}/apply`);
   }
 
   // Auth Role Guard Screen
@@ -46,9 +44,10 @@ const ApplyPage = async ({ params }) => {
 
   const applications = await getApplicationsByApplicant(user.id);
 
-  const plan = await getPlanById(user?.plan || "seeker_free");
+  const plan = await getPlansById(user?.plan || "seeker_free");
+  console.log("plan", plan);
 
-  const job = await getJobById(id);
+  const job = await getJobsById(id);
 
   const applicationCount = applications?.length || 0;
   const hasReachedLimit = applicationCount >= plan.maxApplicationsPerMonth;
@@ -143,4 +142,3 @@ const ApplyPage = async ({ params }) => {
 };
 
 export default ApplyPage;
-  

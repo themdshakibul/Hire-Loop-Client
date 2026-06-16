@@ -1,5 +1,4 @@
 import React from "react";
-import { getJobById } from "@/lib/api/jobs";
 import { Button, Link } from "@heroui/react";
 import {
   MapPin,
@@ -9,10 +8,11 @@ import {
   ArrowUpRight,
 } from "@gravity-ui/icons";
 import Image from "next/image";
+import { getJobsById } from "@/lib/api/jobs";
 
 const Page = async ({ params }) => {
   const { id } = await params;
-  const job = await getJobById(id);
+  const job = await getJobsById(id);
 
   // Guard clause in case API fails or returns null
   if (!job) {
@@ -34,7 +34,7 @@ const Page = async ({ params }) => {
       : amount;
   };
 
-  // Humanize standard date formats (e.g. 2026-07-21 -> July 21, 2026)
+  // Humanize
   const formatDate = (dateString) => {
     if (!dateString) return "N/A";
     return new Date(dateString).toLocaleDateString("en-US", {
@@ -46,8 +46,7 @@ const Page = async ({ params }) => {
 
   return (
     <main className="w-full min-h-screen bg-zinc-950 text-zinc-100 p-6 md:p-12 lg:p-16">
-      <div className="container mx-auto grid grid-cols-1 lg:grid-cols-3 gap-10 items-start">
-        {/* LEFT BLOCK: Corporate Identity, Description & Details (Spans 2 columns) */}
+      <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-3 gap-10 items-start">
         <div className="lg:col-span-2 space-y-8">
           {/* Header Group */}
           <div className="space-y-4">

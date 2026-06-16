@@ -18,6 +18,7 @@ import {
   LayoutHeaderCells,
 } from "@gravity-ui/icons";
 import { submitApplication } from "@/lib/actions/applications";
+import toast from "react-hot-toast";
 
 const JobApply = ({ job, applicant }) => {
   const [formData, setFormData] = useState({
@@ -49,11 +50,10 @@ const JobApply = ({ job, applicant }) => {
       ...formData,
     };
 
-    console.log("Submitting Application:", submissionData);
     // Handle your API submission here
     const res = await submitApplication(submissionData);
     if (res.insertedId) {
-      alert("Application submitted successfully!");
+      toast.success("Application submitted successfully!");
       setFormData({ resumeLink: "", portfolioLink: "", additionalNotes: "" });
     }
   };
